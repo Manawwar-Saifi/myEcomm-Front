@@ -67,14 +67,14 @@ const Home = () => {
   // },[categories])
 
   const userId = localStorage.getItem("userId");
-  console.log(userId);
+  // console.log(userId);
   const handleAddToCart = async (
     productId,
     productName,
     productImage,
     price
   ) => {
-    console.log(productImage, productImage, productId);
+    // console.log(productImage, productImage, productId);
 
     if (!userId) {
       errorMessage("User not logged in! Please log in to add items to cart.");
@@ -101,7 +101,7 @@ const Home = () => {
         body: JSON.stringify(cartData),
       });
 
-      console.log("add to cart response::", response);
+      // console.log("add to cart response::", response);
 
       const result = await response.json();
       if (response.ok) {

@@ -106,7 +106,7 @@ function App() {
 
   useEffect(() => {
     if (userRole !== null && userRole !== "") {
-      console.log(userRole);
+      // console.log(userRole);
     }
   }, [userRole]);
 

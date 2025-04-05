@@ -34,14 +34,14 @@ const Login = () => {
         body: JSON.stringify(user),
       });
       const data = await response.json();
-      console.log("loign data::", data);
+      // console.log("loign data::", data);
       if (data.success == false) {
         errorMessage(data.message);
       } else {
         successMessaage(data.message);
         setLoggedIn(true);
-        console.log("login data::", data);
-        console.log("login data::", data.role);
+        // console.log("login data::", data);
+        // console.log("login data::", data.role);
 
         localStorage.setItem("token", data.token);
         localStorage.setItem("email", data.email);
