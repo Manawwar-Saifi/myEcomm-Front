@@ -15,7 +15,7 @@ const CheckoutForm = () => {
   const [error, setError] = useState("");
 
   const userId = localStorage.getItem("userId");
-
+  const backend_url = import.meta.env.VITE_BASE_API_URL;
   useEffect(() => {
     const getUserData = async () => {
       if (!userId) return;
@@ -23,7 +23,7 @@ const CheckoutForm = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:8000/user/single-user/${userId}`
+          `${backend_url}/user/single-user/${userId}`
         );
         const result = await response.json();
 
@@ -74,7 +74,7 @@ const CheckoutForm = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:8000/user/update-user/${userId}`,
+        `${backend_url}/user/update-user/${userId}`,
         {
           method: "PUT", // Use PATCH instead of POST for updates
           headers: {
