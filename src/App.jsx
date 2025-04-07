@@ -54,7 +54,7 @@ function App() {
   const AfterLogin = ({ element }) => {
     const { loggedIn } = useContext(LoginContext);
     const userId = localStorage.getItem("userId");
-
+    const backend_url = import.meta.env.VITE_BASE_API_URL;
     if (loggedIn && userRole === "admin") {
       return <Navigate to="/admin" replace={true} />;
     }
@@ -73,7 +73,7 @@ function App() {
     const fetchUserRole = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/user/single-user/${userId}`
+          `${backend_url}/user/single-user/${userId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch user data");
@@ -88,18 +88,29 @@ function App() {
   }, [userId]);
 
   const CheckAdmin = ({ element }) => {
-    const userRole = localStorage.getItem("userRole");
     const navigate = useNavigate();
     const { loggedIn } = useContext(LoginContext);
     const userId = localStorage.getItem("userId");
+    const [userRole, setUserRole] = useState(null);
 
     useEffect(() => {
-      if (!loggedIn || !userId) navigate("/login", { replace: true });
-      if (userRole == "user") navigate("/home", { replace: true });
-      if (userRole == "admin") navigate("/admin", { replace: true });
-    }, [userRole, loggedIn, userId]);
+      const storedUserRole = localStorage.getItem("userRole");
+      if (storedUserRole) {
+        setUserRole(storedUserRole);
+      }
+    }, []); // Run this once on mount to load userRole from localStorage
 
-    if (userRole === null) return <p>Loading...</p>;
+    useEffect(() => {
+      if (!loggedIn || !userId) {
+        navigate("/login", { replace: true });
+      } else if (userRole === "user") {
+        navigate("/home", { replace: true });
+      } else if (userRole === "admin") {
+        navigate("/admin", { replace: true });
+      }
+    }, [userRole, loggedIn, userId, navigate]); // Watch all dependencies
+
+    if (userRole === null) return <p>Loading...</p>; // Loading state while waiting for userRole
 
     return element;
   };
