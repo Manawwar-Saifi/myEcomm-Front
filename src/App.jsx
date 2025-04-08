@@ -92,28 +92,28 @@ function App() {
     const { loggedIn } = useContext(LoginContext);
     const userId = localStorage.getItem("userId");
     const [userRole, setUserRole] = useState(null);
-
+  
     useEffect(() => {
       const storedUserRole = localStorage.getItem("userRole");
       if (storedUserRole) {
         setUserRole(storedUserRole);
       }
-    }, []); // Run this once on mount to load userRole from localStorage
-
+    }, []);
+  
     useEffect(() => {
       if (!loggedIn || !userId) {
         navigate("/login", { replace: true });
       } else if (userRole === "user") {
-        navigate("/home", { replace: true });
-      } else if (userRole === "admin") {
-        navigate("/admin", { replace: true });
+        navigate("/", { replace: true });
       }
-    }, [userRole, loggedIn, userId, navigate]); // Watch all dependencies
-
-    if (userRole === null) return <p>Loading...</p>; // Loading state while waiting for userRole
-
-    return element;
+    }, [userRole, loggedIn, userId, navigate]);
+  
+    if (userRole === null) return <p>Loading...</p>;
+  
+    // Only render if admin
+    return userRole === "admin" ? element : <Navigate to="/" replace />;
   };
+  
 
   useEffect(() => {
     if (userRole !== null && userRole !== "") {
